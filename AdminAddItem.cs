@@ -69,7 +69,7 @@ namespace ABC_Car_Traders
                          VALUES (@Itemcode, @VehiclePart, @ItemName, @ItemPrice, @Brand, @ModelYear, @Type, @PriceRange, @Condition, @FuelType, @Status, @Mileage, @Description, @ItemImage, @AddDate)";
 
                     using (SqlCommand cmd = new SqlCommand(query, con))
-                    {
+                    {//assign db values to boxes
                         cmd.Parameters.AddWithValue("@Itemcode", newItemCode);
                         cmd.Parameters.AddWithValue("@VehiclePart", AddItemVehicleradioButton.Checked ? "Vehicle" : "Part");
                         cmd.Parameters.AddWithValue("@ItemName", AddItemNameBox.Text);
@@ -107,6 +107,7 @@ namespace ABC_Car_Traders
                         // Show success message with the new Item Code
                         MessageBox.Show($"Item added successfully! The Item Code is: {newItemCode}", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     }
+                    con.Close();//close the db connection
                 }
             }
             catch (SqlException ex)
@@ -125,7 +126,7 @@ namespace ABC_Car_Traders
             {
                 using (SqlConnection con = new SqlConnection("Data Source=DESKTOP-UJJH25V;Initial Catalog=\"ABC Car Traders\";Integrated Security=True;Encrypt=True;TrustServerCertificate=True"))
                 {
-                    con.Open();
+                    con.Open();//open swl connection
                     string query = @"SELECT TOP 1 ItemCode FROM Item WHERE ItemCode LIKE @ItemCodePrefix ORDER BY ItemCode DESC";
                     using (SqlCommand cmd = new SqlCommand(query, con))
                     {
@@ -146,7 +147,7 @@ namespace ABC_Car_Traders
                             }
                         }
                     }
-                    con.Close();
+                    con.Close();//close swl connection
                 }
             }
             catch (Exception ex)
@@ -192,7 +193,7 @@ namespace ABC_Car_Traders
                 try
                 {
                     using (OpenFileDialog openFileDialog = new OpenFileDialog())
-                    {
+                    {//only JPG,png files allowed to upload as image
                         openFileDialog.Filter = "JPEG files (*.jpg)|*.jpg|PNG files (*.png)|*.png|All files (*.*)|*.*";
                         if (openFileDialog.ShowDialog() == DialogResult.OK)
                         {
