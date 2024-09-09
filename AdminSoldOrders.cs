@@ -338,7 +338,7 @@ namespace ABC_Car_Traders
                             // Refresh the DataGridView to reflect changes
                             LoadData();
 
-                            con.Close();
+                            con.Close();//closed the opened connection
                         }
                     }
                     else

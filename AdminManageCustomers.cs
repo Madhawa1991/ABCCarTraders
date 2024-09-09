@@ -182,7 +182,7 @@ namespace ABC_Car_Traders
             }
         }
 
-
+        //when a user is deactivated admin can active again
         private void AdminMangeCustomerDeactiveBtn_Click(object sender, EventArgs e)
         {
             try
@@ -197,7 +197,7 @@ namespace ABC_Car_Traders
                     {
                         string connectionString = "Data Source=DESKTOP-UJJH25V;Initial Catalog=\"ABC Car Traders\";Integrated Security=True;Encrypt=True;TrustServerCertificate=True";
                         string updateQuery = "UPDATE customer SET status = 'Deactivate', [Update Date] = @UpdateDate WHERE userID = @UserID";
-
+                        //staus ="Deactivated", uodate date= now
                         using (SqlConnection con = new SqlConnection(connectionString))
                         {
                             using (SqlCommand cmd = new SqlCommand(updateQuery, con))
@@ -210,7 +210,7 @@ namespace ABC_Car_Traders
                                 if (rowsAffected > 0)
                                 {
                                     MessageBox.Show("Customer 'Deactivate' Successfully. You can reactivate it later.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                                    LoadData();
+                                    LoadData();//sucessfull message and reloaded data
                                 }
                                 else
                                 {
@@ -242,8 +242,8 @@ namespace ABC_Car_Traders
             try
             {
                 if (!string.IsNullOrEmpty(AdminManageCustomerUserIDbox.Text))
-                {
-                    string userId = AdminManageCustomerUserIDbox.Text.Trim();
+                {//assigning values to the varibales with trim 
+                    string userId = AdminManageCustomerUserIDbox.Text.Trim();//trim= remove unwanted spaces
                     string username = AdminManageCustomerNameBox.Text.Trim();
                     string nic = AdminManageCustomerNICBox.Text.Trim();
                     string address = AdminManageCustomerAddressBox.Text.Trim();
@@ -254,7 +254,7 @@ namespace ABC_Car_Traders
 
                     if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(nic) || string.IsNullOrEmpty(address) ||
                         string.IsNullOrEmpty(telephone) || string.IsNullOrEmpty(email) || string.IsNullOrEmpty(role) ||
-                        string.IsNullOrEmpty(status))
+                        string.IsNullOrEmpty(status))//checking any field missing before update
                     {
                         MessageBox.Show("Please fill all the fields before updating.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                         return;
@@ -265,7 +265,7 @@ namespace ABC_Car_Traders
                         "Confirm Update", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
                     if (result == DialogResult.Yes)
-                    {
+                    {//when there is a chane, it call the connecting string and update query
                         string connectionString = "Data Source=DESKTOP-UJJH25V;Initial Catalog=\"ABC Car Traders\";Integrated Security=True;Encrypt=True;TrustServerCertificate=True";
                         string updateQuery = "UPDATE customer SET username = @Username, NIC = @NIC, address = @Address, " +
                                              "telephone = @Telephone, email = @Email, role = @Role, status = @Status, [Update Date] = @UpdateDate " +
@@ -274,7 +274,7 @@ namespace ABC_Car_Traders
                         using (SqlConnection con = new SqlConnection(connectionString))
                         {
                             using (SqlCommand cmd = new SqlCommand(updateQuery, con))
-                            {
+                            {//assigning values to db query tables
                                 cmd.Parameters.Add("@Username", SqlDbType.NVarChar).Value = username;
                                 cmd.Parameters.Add("@NIC", SqlDbType.NVarChar).Value = nic;
                                 cmd.Parameters.Add("@Address", SqlDbType.NVarChar).Value = address;

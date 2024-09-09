@@ -27,7 +27,7 @@ namespace ABC_Car_Traders
             AdminManageItemGridView.CellClick += AdminManageItemGridView_CellClick;
 
 
-            // Subscribe to change events for text boxes and combo boxes
+            // change events for text boxes and combo boxes
             ManageItemItemNameBox.TextChanged += (s, e) => isDataChanged = true;
             ManageItemItemPriceBox.TextChanged += (s, e) => isDataChanged = true;
             ManageItemVehiclePartBox.TextChanged += (s, e) => isDataChanged = true;
@@ -58,7 +58,7 @@ namespace ABC_Car_Traders
                 string connectionString = "Data Source=DESKTOP-M9JEPR6\\VS_SERVER;Initial Catalog=\"ABC Car Traders\";Integrated Security=True;TrustServerCertificate=True";
                 string query = @"SELECT ItemCode, [Vehicle/Part], ItemName, ItemPrice, Brand, ModelYear, Type, PriceRange, Condition, FuelType, Status, Mileage, Description, [ItemImage] 
                          FROM Item 
-                         WHERE Status != 'Deleted'";
+                         WHERE Status != 'Deleted'";//no deleted items loding
 
                 // If searchTerm is provided, modify the query to use the LIKE function
                 if (!string.IsNullOrEmpty(searchTerm))
@@ -74,7 +74,7 @@ namespace ABC_Car_Traders
                         OR Description LIKE @SearchTerm
                         OR Status LIKE @SearchTerm)";
                 }
-
+                //connectiong string calling
                 using (SqlConnection con = new SqlConnection(connectionString))
                 {
                     using (SqlCommand cmd = new SqlCommand(query, con))
@@ -87,7 +87,7 @@ namespace ABC_Car_Traders
                         SqlDataAdapter da = new SqlDataAdapter(cmd);
                         DataTable dt = new DataTable();
                         da.Fill(dt);
-                        AdminManageItemGridView.DataSource = dt;
+                        AdminManageItemGridView.DataSource = dt;//data to grid
                     }
                 }
             }
@@ -196,6 +196,7 @@ namespace ABC_Car_Traders
                         MessageBox.Show("Item updated successfully.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         LoadData(); // Reload the DataGridView to reflect the changes
                         isDataChanged = false;//flag reset
+                        con.Open();//once done close the connection
                     }
                 }
             }
@@ -239,11 +240,11 @@ namespace ABC_Car_Traders
                 if (string.IsNullOrEmpty(ManageItemItemCodeBox.Text))
                 {
                     MessageBox.Show("Please select an item to delete.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return;
+                    return;//when no item has been selected error message
                 }
 
                 var result = MessageBox.Show("Are you sure you want to delete this item?", "Delete Item", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
-                if (result == DialogResult.Yes)
+                if (result == DialogResult.Yes)//confirmming message
                 {
                     string connectionString = "Data Source=DESKTOP-M9JEPR6\\VS_SERVER;Initial Catalog=\"ABC Car Traders\";Integrated Security=True;TrustServerCertificate=True";
                     using (SqlConnection con = new SqlConnection(connectionString))
@@ -257,7 +258,7 @@ namespace ABC_Car_Traders
 
                             con.Open();
                             cmd.ExecuteNonQuery();
-                            con.Close();
+                            con.Close();//onece execute query close the opend connection
                         }
                     }
                     MessageBox.Show("Item marked as 'Deleted' successfully.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -276,10 +277,10 @@ namespace ABC_Car_Traders
 
         private void AdminManageItemClearBtn_Click(object sender, EventArgs e) // Clear all input fields and reset the image
         {
-            ManageItemItemCodeBox.Clear();
+            ManageItemItemCodeBox.Clear();//tex boxes clear
             ManageItemItemNameBox.Clear();
             ManageItemItemPriceBox.Text = string.Empty;
-            ManageItemVehiclePartBox.SelectedIndex = -1;
+            ManageItemVehiclePartBox.SelectedIndex = -1;//combo boxes
             ManageItemItemTypeBox.SelectedIndex = -1;
             ManageItemPriceRangeBox.SelectedIndex = -1;
             ManageItemConditionBox.SelectedIndex = -1;
