@@ -71,10 +71,10 @@ namespace ABC_Car_Traders
             }
         }
 
-        private void AdminMangeCustomerSearchBtn_Click(object sender, EventArgs e)
+        private void AdminMangeCustomerSearchBtn_Click(object sender, EventArgs e)//search button clicked load data in to the grid view
         {
             try
-            {
+            {//search quary accordin to the search box text
                 string connectionString = "Data Source=DESKTOP-UJJH25V;Initial Catalog=\"ABC Car Traders\";Integrated Security=True;Encrypt=True;TrustServerCertificate=True";
                 string searchQuery = "SELECT userID, username, NIC, address, telephone, email, role, status " +
                      "FROM customer " +
@@ -109,16 +109,16 @@ namespace ABC_Car_Traders
         private void AdminManageCustomerSearchClearBtn_Click(object sender, EventArgs e)
         {
             try
-            {
+            {//clear the search tex boxes
                 AdminMangeCustomersSearchBox.Text = string.Empty;
-                bindingSource.Filter = null;
-                AdminManageCustomerNameBox.Text = string.Empty;
+                bindingSource.Filter = null;//clear the grid view by clearing the binding source
+                AdminManageCustomerNameBox.Text = string.Empty;// tex boxex empty
                 AdminManageCustomerNICBox.Text = string.Empty;
                 AdminManageCustomerAddressBox.Text = string.Empty;
                 AdminManageCustomersTelephoneBox.Text = string.Empty;
                 AdminManageCustomersEmailBox.Text = string.Empty;
                 AdminManageCustomersRoleBox.SelectedIndex = -1;
-                AdminMangeCustomerStatusBox.SelectedIndex = -1;
+                AdminMangeCustomerStatusBox.SelectedIndex = -1;//combo boxex
                 AdminManageCustomerUserIDbox.Text = string.Empty;
 
                 LoadData();
@@ -143,7 +143,7 @@ namespace ABC_Car_Traders
                     {
                         string connectionString = "Data Source=DESKTOP-UJJH25V;Initial Catalog=\"ABC Car Traders\";Integrated Security=True;Encrypt=True;TrustServerCertificate=True";
                         string updateQuery = "UPDATE customer SET status = 'Deleted', [Update Date] = @UpdateDate WHERE userID = @UserID";
-
+                        //item satus delete with upadate date, no one can se the customer any more, but in reorts can see the deleted item
                         using (SqlConnection con = new SqlConnection(connectionString))
                         {
                             using (SqlCommand cmd = new SqlCommand(updateQuery, con))
